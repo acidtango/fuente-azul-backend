@@ -1,4 +1,4 @@
-import { applyDecorators, HttpCode, SetMetadata } from '@nestjs/common'
+import { applyDecorators, HttpCode } from '@nestjs/common'
 import {
   ApiOperation,
   ApiResponse,
@@ -7,7 +7,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger'
 import { Public } from './Public'
-import { Role } from '../../domain/models/Role'
 
 export enum DocumentationTag {
   HEALTH = 'Health',
@@ -18,13 +17,12 @@ export enum DocumentationTag {
 
 export type Options = {
   tag: DocumentationTag
-  roles?: Role[]
 }
 export type EndpointOptions = ApiResponseMetadata & Options
 
 export function Endpoint(options: EndpointOptions) {
   if (options.status && typeof options.status === 'number') {
-    const { description, roles, ...remainingOptions } = options
+    const { description, ...remainingOptions } = options
     const decorators = [
       ApiOperation({ summary: description }),
       ApiResponse(remainingOptions),
@@ -32,9 +30,7 @@ export function Endpoint(options: EndpointOptions) {
       ApiTags(options.tag),
     ]
 
-    if (!roles) return applyDecorators(...decorators, Public())
-
-    return applyDecorators(...decorators, ApiSecurity('bearer'), SetMetadata('roles', roles))
+    return applyDecorators(...decorators, Public())
   }
 
   return applyDecorators(ApiResponse(options), ApiTags(options.tag), ApiSecurity('bearer'))

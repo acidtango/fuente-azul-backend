@@ -1,17 +1,11 @@
-import { Test, TestingModuleBuilder } from '@nestjs/testing'
-import { MainModule } from '../../src/MainModule'
-import { config } from '../../src/shared/infrastructure/config'
-import { Token } from '../../src/shared/domain/services/Token'
-import { EventRepositoryMemory } from '../../src/events/infrastructure/repositories/EventRepositoryMemory'
-import { TalkRepositoryMemory } from '../../src/talks/infrastructure/repositories/TalkRepositoryMemory'
-import { SpeakerRepositoryMemory } from '../../src/speakers/infrastructure/repositories/SpeakerRepositoryMemory'
 import { INestApplication, VersioningType } from '@nestjs/common'
+import { Test } from '@nestjs/testing'
 import { Server } from 'http'
-import { isReseteable } from '../../src/shared/infrastructure/repositories/Reseteable'
-import { ClockFake } from '../../src/shared/infrastructure/services/clock/ClockFake'
-import { EmailSenderFake } from '../fakes/EmailSenderFake'
-import { EventBusMemory } from '../../src/shared/infrastructure/events/EventBus/EventBusMemory'
+import { MainModule } from '../../src/MainModule'
 import { EventBus } from '../../src/shared/domain/models/hex/EventBus'
+import { Token } from '../../src/shared/domain/services/Token'
+import { config } from '../../src/shared/infrastructure/config'
+import { isReseteable } from '../../src/shared/infrastructure/repositories/Reseteable'
 
 export class TestApi {
   private static instance: TestApi
@@ -43,33 +37,11 @@ export class TestApi {
   }
 
   private createRootModule() {
-    let testingModuleBuilder = Test.createTestingModule({
+    const testingModuleBuilder = Test.createTestingModule({
       imports: [MainModule],
     })
 
-    testingModuleBuilder = this.useThirdPartyMocks(testingModuleBuilder)
-
-    if (!config.forceEnableORMRepositories) {
-      testingModuleBuilder = this.useMemoryRepositories(testingModuleBuilder)
-    }
     return testingModuleBuilder
-  }
-
-  private useMemoryRepositories(testingModuleBuilder: TestingModuleBuilder) {
-    return testingModuleBuilder
-      .overrideProvider(Token.EVENT_REPOSITORY)
-      .useClass(EventRepositoryMemory)
-      .overrideProvider(Token.TALK_REPOSITORY)
-      .useClass(TalkRepositoryMemory)
-      .overrideProvider(Token.SPEAKER_REPOSITORY)
-      .useClass(SpeakerRepositoryMemory)
-      .overrideProvider(Token.EVENT_BUS)
-      .useClass(EventBusMemory)
-  }
-
-  private useThirdPartyMocks(testingModuleBuilder: TestingModuleBuilder) {
-    // Here we override the necessary services
-    return testingModuleBuilder.overrideProvider(Token.EMAIL_SENDER).useClass(EmailSenderFake)
   }
 
   async close() {
@@ -84,16 +56,8 @@ export class TestApi {
     return this.app
   }
 
-  public getClock() {
-    return this.getNestApplication().get<ClockFake>(Token.CLOCK)
-  }
-
   public getEventBus() {
     return this.getNestApplication().get<EventBus>(Token.EVENT_BUS)
-  }
-
-  public getEmailSender() {
-    return this.getNestApplication().get<EmailSenderFake>(Token.EMAIL_SENDER)
   }
 
   private getNestApplication() {
