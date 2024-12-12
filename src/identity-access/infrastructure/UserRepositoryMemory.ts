@@ -1,9 +1,11 @@
+import { OnApplicationBootstrap } from '@nestjs/common'
+import { UserBuilder } from '../../../test/builders/UserBuilder'
 import { EmailAddress } from '../../shared/domain/models/EmailAddress'
 import { UserRepository } from '../application/repositories/UserRepository'
 import { UserNotFound } from '../domain/errors/UserNotFound'
 import { User, UserPrimitives } from '../domain/User'
 
-export class UserRepositoryMemory implements UserRepository {
+export class UserRepositoryMemory implements UserRepository, OnApplicationBootstrap {
   constructor(private readonly users: Map<string, UserPrimitives> = new Map()) {}
 
   async save(user: User): Promise<void> {
@@ -28,5 +30,17 @@ export class UserRepositoryMemory implements UserRepository {
 
   private asArray() {
     return new Array(...this.users.values())
+  }
+
+  private populate() {
+    const albertoPrimitives = UserBuilder.build().toPrimitives()
+    const tanaPrimitives = UserBuilder.withEmail('tanausu@acidtango.com').build().toPrimitives()
+
+    this.users.set(albertoPrimitives.id, albertoPrimitives)
+    this.users.set(tanaPrimitives.id, tanaPrimitives)
+  }
+
+  onApplicationBootstrap() {
+    this.populate()
   }
 }

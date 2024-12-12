@@ -14,8 +14,9 @@ type UserProps = {
 }
 
 type UserCreateParams = {
+  id: string
   email: string
-  plainPassword: string
+  password: string
   salt: string
 }
 
@@ -30,9 +31,9 @@ export class User extends AggregateRoot {
     const salt = Salt.fromPrimitives(p.salt)
 
     return new User({
-      id: UserId.generate(),
+      id: UserId.fromPrimitives(p.id),
       email: EmailAddress.fromPrimitives(p.email),
-      password: PlainPassword.fromPrimitives(p.plainPassword).toHashed(salt),
+      password: PlainPassword.fromPrimitives(p.password).toHashed(salt),
       salt,
     })
   }
