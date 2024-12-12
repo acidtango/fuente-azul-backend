@@ -11,7 +11,10 @@
 ```json
 {
   "typescript.preferences.importModuleSpecifier": "relative",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
 }
 ```
 

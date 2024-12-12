@@ -1,9 +1,13 @@
+import { UuidGeneratorRandom } from '../../../infrastructure/services/uuid-generator/UuidGeneratorRandom'
+
 export class DomainId {
-  static toPrimitives(id: DomainId) {
-    return id.id
-  }
+  static uuidGenerator = new UuidGeneratorRandom()
 
   constructor(private readonly id: string) {}
+
+  generate() {
+    return DomainId.uuidGenerator.generate()
+  }
 
   equals(other: DomainId) {
     return this.id === other.id
@@ -11,6 +15,10 @@ export class DomainId {
 
   toPrimitives() {
     return DomainId.toPrimitives(this)
+  }
+
+  static toPrimitives(id: DomainId) {
+    return id.id
   }
 
   toString() {

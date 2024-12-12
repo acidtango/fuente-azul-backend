@@ -1,5 +1,6 @@
-import { PlainPassword } from './PlainPassword'
 import { HashedPassword } from './HashedPassword'
+import { PlainPassword } from './PlainPassword'
+import { Salt } from './Salt'
 
 describe('PlainPassword', () => {
   const hashOfPasswordAndSalt = HashedPassword.fromPrimitives(
@@ -8,7 +9,7 @@ describe('PlainPassword', () => {
 
   it('converts to a hashed password', () => {
     const plainPassword = new PlainPassword('password')
-    const salt = 'salt'
+    const salt = Salt.fromPrimitives('salt')
     const hashedPassword = plainPassword.toHashed(salt)
 
     expect(hashedPassword.equalsTo(hashOfPasswordAndSalt)).toBe(true)
@@ -16,7 +17,7 @@ describe('PlainPassword', () => {
 
   it('comparison fails if password is wrong', () => {
     const plainPassword = new PlainPassword('wrong password')
-    const salt = 'salt'
+    const salt = Salt.fromPrimitives('salt')
     const hashedPassword = plainPassword.toHashed(salt)
 
     expect(hashedPassword.equalsTo(hashOfPasswordAndSalt)).toBe(false)
@@ -24,7 +25,7 @@ describe('PlainPassword', () => {
 
   it('comparison fails if salt is wrong', () => {
     const plainPassword = new PlainPassword('password')
-    const salt = 'wrong salt'
+    const salt = Salt.fromPrimitives('wrong salt')
     const hashedPassword = plainPassword.toHashed(salt)
 
     expect(hashedPassword.equalsTo(hashOfPasswordAndSalt)).toBe(false)
