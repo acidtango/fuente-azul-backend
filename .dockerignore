@@ -1,5 +1,8 @@
 *
 !src
+!test/fixtures
+!test/builders
+!test/utils
 !yarn.lock
 !package.json
 !nest-cli.json
