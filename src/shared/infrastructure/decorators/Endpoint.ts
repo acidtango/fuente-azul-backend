@@ -10,7 +10,7 @@ import { Public } from './Public'
 
 export enum DocumentationTag {
   HEALTH = 'Health',
-  AUTH = 'Auth',
+  IDENTITY_ACCESS = 'Identity Access',
 }
 
 export type Options = {

@@ -3,12 +3,12 @@ import { DocumentationTag, Endpoint } from '../../../shared/infrastructure/decor
 import { LoginRequestDto } from './dtos/LoginRequestDto'
 import { LoginResponseDto } from './dtos/LoginResponseDto'
 
-@Controller('/v1/auth/login')
+@Controller('/v1/identity-access/login')
 export class UserLoginEndpoint {
   constructor() {}
 
   @Endpoint({
-    tag: DocumentationTag.AUTH,
+    tag: DocumentationTag.IDENTITY_ACCESS,
     description: 'Obtains JWT token for user',
     status: HttpStatus.OK,
     type: LoginResponseDto,

@@ -5,12 +5,12 @@ import { CheckIfUserExists } from '../../application/use-cases/CheckIfUserExists
 import { CheckIfUserExistsRequestDto } from './dtos/CheckIfUserExistsRequestDto'
 import { CheckIfUserExistsResponseDto } from './dtos/CheckIfUserExistsResponseDto'
 
-@Controller('/v1/auth/check-user')
+@Controller('/v1/identity-access/check-user')
 export class CheckIfUserExistsEndpoint {
   constructor(private readonly checkIfExists: CheckIfUserExists) {}
 
   @Endpoint({
-    tag: DocumentationTag.AUTH,
+    tag: DocumentationTag.IDENTITY_ACCESS,
     description: 'Check if user is registered',
     type: CheckIfUserExistsResponseDto,
     status: HttpStatus.OK,

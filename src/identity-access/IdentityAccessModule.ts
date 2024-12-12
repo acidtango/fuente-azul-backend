@@ -22,4 +22,4 @@ import { UserRepositoryMemory } from './infrastructure/UserRepositoryMemory'
     { provide: Token.USER_REPOSITORY, useClass: UserRepositoryMemory },
   ],
 })
-export class AuthModule {}
+export class IdentityAccessModule {}

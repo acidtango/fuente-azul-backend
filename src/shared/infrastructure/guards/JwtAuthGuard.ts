@@ -1,7 +1,7 @@
-import * as jwt from 'jsonwebtoken'
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import { JwtPayload } from '../../../auth/domain/JwtPayload'
+import * as jwt from 'jsonwebtoken'
+import { JwtPayload } from '../../../identity-access/domain/JwtPayload'
 
 @Injectable()
 export class RolesGuard implements CanActivate {

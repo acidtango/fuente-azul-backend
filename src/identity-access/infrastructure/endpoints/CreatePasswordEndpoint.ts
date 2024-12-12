@@ -4,12 +4,12 @@ import { DocumentationTag, Endpoint } from '../../../shared/infrastructure/decor
 import { CreatePasswordForUser } from '../../application/use-cases/CreatePasswordForUser'
 import { CreatePasswordRequestDto } from './dtos/CreatePasswordRequestDto'
 
-@Controller('/v1/auth/set-password')
+@Controller('/v1/identity-access/set-password')
 export class CreatePasswordEndpoint {
   constructor(private readonly createPassword: CreatePasswordForUser) {}
 
   @Endpoint({
-    tag: DocumentationTag.AUTH,
+    tag: DocumentationTag.IDENTITY_ACCESS,
     description: 'Sets the password for a existing user',
     status: HttpStatus.CREATED,
   })
